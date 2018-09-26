@@ -1,7 +1,6 @@
-#!/usr/local/bin/perl -w
-
-use strict ;
-use File::Slurp ;
+use strict;
+use warnings;
+use File::Slurp;
 
 use Test::More tests => 1 ;
 

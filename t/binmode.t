@@ -1,6 +1,5 @@
-#!/usr/local/bin/perl -w
-
-use strict ;
+use strict;
+use warnings;
 use Test::More ;
 use Carp ;
 use File::Slurp ;
