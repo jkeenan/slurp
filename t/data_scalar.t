@@ -37,7 +37,7 @@ sub test_data_scalar_slurp {
 	my $data_seek = tell( \*DATA );
 
 # first slurp in the text
- 
+
 	my $slurp_text = read_file( \*DATA ) ;
 
 # now we need to get the golden data

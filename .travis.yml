@@ -39,8 +39,10 @@ before_install:
   - build-dist
   - cd $BUILD_DIR
 install:
-  - "cpanm -n Test::More Test::Pod Test::Pod::Coverage"
-  - "cpanm -n --installdeps ."
+  - cpan-install --deps
+script:
+  - perl Makefile.PL
+  - make test
 sudo: false
 notifications:
   email: false

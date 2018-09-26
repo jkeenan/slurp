@@ -5,7 +5,10 @@ Revision history File::Slurp
 	- Remove doc mentions of Perl < 5.006 as that's required.
 	- Fix POD coverage tests by adding a few more ignored functions
 	- Separated out the various requirements and updated the Makefile.PL
-	- CI testing via TravisCI
+	- CI testing via TravisCI and AppVeyor
+	- Move author tests to xt/author and add a few new ones
+	- Remove spaces at EOL where xt/author/eol.t found them.
+	- Added t/00-report-prereqs.t to give a prereq report.
 
 9999.19	  Tue Jun  7 04:06:06 EDT 2011
 	- Fixed use line in t/edit_file.t to import :edit first
