@@ -22,14 +22,15 @@ my %TestReqs = (
     "warnings" => 0,
     # "B" => 0, # recommended
     "Carp" => 0,
+    'Exporter' => 0,
     "File::Spec" => 0,
+    "File::Temp" => 0,
     "IO::Handle" => 0,
     "POSIX" => 0,
     "Scalar::Util" => 0,
     "Socket" => 0,
     "Symbol" => 0,
     "Test::More" => 0,
-    "UNIVERSAL" => 0,
 );
 my %prereqs = (
     'Carp' => 0,
