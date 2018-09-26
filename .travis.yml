@@ -1,5 +1,12 @@
+addons:
+  apt:
+    packages:
+      - aspell
+      - aspell-en
 language: perl
 perl:
+  - "blead"
+  - "blead-thr"
   - "5.28"
   - "5.26"
   - "5.24"
