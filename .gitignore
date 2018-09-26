@@ -8,6 +8,7 @@ blib/
 *gz
 *.tar
 *.new
+*.bak
 Makefile
 *.old
 File-Slurp.*

@@ -1,0 +1,9 @@
+^\.git
+^blib/
+^experiment/
+^slurp_talk/
+TODO
+Makefile$
+\.bak$
+^extras/new_text$
+^extras/slurp2.pod$
