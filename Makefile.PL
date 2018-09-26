@@ -22,6 +22,7 @@ my %TestReqs = (
     "warnings" => 0,
     # "B" => 0, # recommended
     "Carp" => 0,
+    "File::Spec" => 0,
     "IO::Handle" => 0,
     "POSIX" => 0,
     "Scalar::Util" => 0,
