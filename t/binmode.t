@@ -18,7 +18,9 @@ my $suf = 'utf8';
 my $mode = ":$suf";
 
 # euro symbol with \r\n or \n
-my $orig_text = ($^O eq 'MSWin32') ? "\x{20ac}\015\012" : "\x{20ac}\012";
+my $orig_text = "\x{20ac}\n";
+my $win_text = "\x{20ac}\015\012";
+my $expected_text = $^O eq 'MSWin32' ? $win_text : $orig_text;
 my $unicode_length = length $orig_text;
 
 my (undef, $control_file) = tempfile('ctrlXXXXX', DIR => File::Spec->tmpdir, OPEN => 0);
@@ -30,8 +32,8 @@ my (undef, $slurp_file) = tempfile('slurpXXXXX', DIR => File::Spec->tmpdir, OPEN
     $fh->print($orig_text);
 }
 
-my $slurp_utf = read_file( $control_file, binmode => $mode ) ;
-is($slurp_utf, $orig_text, "read_file of $mode file");
+my $slurp_utf = read_file( $control_file, binmode => $mode);
+is($slurp_utf, $expected_text, "read_file of $mode file");
 
 my $res = write_file($slurp_file, {binmode => $mode}, $orig_text);
 ok($res, "write_file: binmode opt");
