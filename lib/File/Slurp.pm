@@ -11,6 +11,7 @@ use Fcntl qw( :DEFAULT ) ;
 use POSIX qw( :fcntl_h ) ;
 use Errno ;
 #use Symbol ;
+use Data::Dump qw(dd pp);
 
 use vars qw( @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS $VERSION ) ;
 @ISA = qw( Exporter ) ;
@@ -160,10 +161,12 @@ sub read_file {
 # it could be an open handle or an overloaded object
 
 	if ( ref $file_name ) {
+print STDERR "AAA: file name is a reference: $file_name\n";
 
 		my $ref_result = _check_ref( $file_name ) ;
 
 		if ( ref $ref_result ) {
+print STDERR "BBB: _check_ref() returns a reference\n";
 
 # we got an error, deal with it
 
@@ -310,6 +313,8 @@ sub _check_ref {
 # check if we are reading from a handle (GLOB or IO object)
 
 	if ( eval { $handle->isa( 'GLOB' ) || $handle->isa( 'IO' ) } ) {
+        print STDERR "CCC:\n";
+        pp($handle);
 
 # we have a handle. deal with seeking to it if it is DATA
 
@@ -359,10 +364,12 @@ ERR
 	}
 
 	if ( B::svref_2object( $handle )->IO->IoFLAGS & 16 ) {
+        print STDERR "DDD: ", B::svref_2object( $handle )->IO->IoFLAGS & 16, "\n";
 
 # set the seek position to the current tell.
 
 		unless( sysseek( $handle, tell( $handle ), SEEK_SET ) ) {
+        print STDERR "EEE:\n";
 			return "read_file '$handle' - sysseek: $!" ;
 		}
 	}
@@ -803,6 +810,7 @@ my %err_func = (
 sub _error {
 
 	my( $opts, $err_msg ) = @_ ;
+print STDERR "XXX: Hitting _error(): $err_msg\n";
 
 # get the error function to use
 
