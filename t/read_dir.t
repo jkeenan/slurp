@@ -61,7 +61,8 @@ my @prefixed_entries = read_dir( $test_dir, {prefix => 1} ) ;
 #dd(\@prefixed_entries);
 @prefixed_entries = sort @prefixed_entries ;
 ok( eq_array( \@prefixed_entries, [map "$test_dir/$_", @dir_entries] ),
-	'prefix option' ) ;
+	'prefix option' )
+    or diag(\@prefixed_entries, [map "$test_dir/$_", @dir_entries]) ;
 
 # clean up
 
