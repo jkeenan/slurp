@@ -11,7 +11,7 @@ use Exporter ;
 use Fcntl qw( :DEFAULT ) ;
 use POSIX qw( :fcntl_h ) ;
 use Errno ;
-#use Symbol ;
+use File::Spec;
 
 use vars qw( @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS  ) ;
 @ISA = qw( Exporter ) ;
@@ -778,7 +778,7 @@ sub read_dir {
 
 	if ( $opts->{'prefix'} ) {
 
-		substr( $_, 0, 0, "$dir/" ) for @dir_entries ;
+        $_ = File::Spec->catfile($dir, $_) for @dir_entries;
 	}
 
 	return @dir_entries if wantarray ;
