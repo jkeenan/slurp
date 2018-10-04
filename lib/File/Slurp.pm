@@ -12,6 +12,8 @@ use Fcntl qw( :DEFAULT ) ;
 use POSIX qw( :fcntl_h ) ;
 use Errno ;
 #use Symbol ;
+use File::Spec;
+#use Data::Dump qw(dd pp);
 
 use vars qw( @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS  ) ;
 @ISA = qw( Exporter ) ;
@@ -776,10 +778,17 @@ sub read_dir {
 	@dir_entries = grep( $_ ne "." && $_ ne "..", @dir_entries )
 		unless $opts->{'keep_dot_dot'} ;
 
+#print STDOUT "OOO\n";
+#dd(\@dir_entries);
 	if ( $opts->{'prefix'} ) {
+#print STDOUT "PPP: testing prefix option\n";
 
-		substr( $_, 0, 0, "$dir/" ) for @dir_entries ;
+        #substr( $_, 0, 0, "$dir/" ) for @dir_entries ;
+        $_ = File::Spec->catfile($dir, $_) for @dir_entries;
+        #@dir_entries = map {File::Spec->catfile($dir, $_)} @dir_entries;
 	}
+#print STDOUT "QQQ\n";
+#dd(\@dir_entries);
 
 	return @dir_entries if wantarray ;
 	return \@dir_entries ;

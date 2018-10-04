@@ -4,12 +4,14 @@ use strict ;
 use Test::More tests => 9 ;
 
 use File::Slurp ;
+#use Data::Dump qw(dd pp);
 
 # try to honor possible tempdirs
 
 my $test_dir = "read_dir_$$" ;
 
 mkdir( $test_dir, 0700) || die "mkdir $test_dir: $!" ;
+print STDOUT "ZZZ: test_dir: $test_dir\n";
 
 my @dir_entries = read_dir( $test_dir );
 
@@ -48,11 +50,15 @@ ok( eq_array( \@dir_entries, \@expected_entries ),
 
 my $dir_entries_ref = read_dir( $test_dir ) ;
 @{$dir_entries_ref} = sort @{$dir_entries_ref} ;
+#print STDOUT "AAA: dir_entries_ref\n";
+#dd($dir_entries_ref);
 
 ok( eq_array( $dir_entries_ref, \@expected_entries ),
 	"dir in array ref" ) ;
 
 my @prefixed_entries = read_dir( $test_dir, {prefix => 1} ) ;
+#print STDOUT "BBB: prefixed_entries\n";
+#dd(\@prefixed_entries);
 @prefixed_entries = sort @prefixed_entries ;
 ok( eq_array( \@prefixed_entries, [map "$test_dir/$_", @dir_entries] ),
 	'prefix option' ) ;
