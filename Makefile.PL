@@ -31,7 +31,6 @@ my %TestReqs = (
     "Socket" => 0,
     "Symbol" => 0,
     "Test::More" => 0,
-    "Data::Dump" => 0,
 );
 my %prereqs = (
     'B' => 0,
