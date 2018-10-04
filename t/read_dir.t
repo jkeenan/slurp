@@ -11,7 +11,6 @@ use File::Spec;
 my $test_dir = "read_dir_$$" ;
 
 mkdir( $test_dir, 0700) || die "mkdir $test_dir: $!" ;
-print STDOUT "ZZZ: test_dir: $test_dir\n";
 
 my @dir_entries = read_dir( $test_dir );
 
