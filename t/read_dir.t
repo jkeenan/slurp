@@ -60,9 +60,11 @@ my @prefixed_entries = read_dir( $test_dir, {prefix => 1} ) ;
 #print STDOUT "BBB: prefixed_entries\n";
 #dd(\@prefixed_entries);
 @prefixed_entries = sort @prefixed_entries ;
-ok( eq_array( \@prefixed_entries, [map "$test_dir/$_", @dir_entries] ),
+my $formulation = [ map "$test_dir/$_", @dir_entries ];
+#ok( eq_array( \@prefixed_entries, [map "$test_dir/$_", @dir_entries] ),
+ok( eq_array( \@prefixed_entries, $formulation ),
 	'prefix option' )
-    or pp(\@prefixed_entries, [map "$test_dir/$_", @dir_entries]) ;
+    or pp(\@prefixed_entries, $formulation) ;
 
 # clean up
 
