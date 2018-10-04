@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w -I.
 
 use strict ;
-use Test::More tests => 9 ;
+use Test::More tests => 10 ;
 
 use File::Slurp ;
 use File::Spec;
@@ -54,10 +54,18 @@ ok( eq_array( $dir_entries_ref, \@expected_entries ),
 	"dir in array ref" ) ;
 
 my @prefixed_entries = read_dir( $test_dir, {prefix => 1} ) ;
-@prefixed_entries = sort @prefixed_entries ;
-my $formulation = [ map File::Spec->catfile($test_dir, $_), @dir_entries ];
-ok( eq_array( \@prefixed_entries, $formulation ),
-	'prefix option' );
+ok( eq_array(
+        [ sort @prefixed_entries ],
+        [ map File::Spec->catfile($test_dir, $_), @dir_entries ]
+    ),
+	'prefix option in hash ref' );
+
+@prefixed_entries = read_dir( $test_dir, prefix => 1 ) ;
+ok( eq_array(
+        [ sort @prefixed_entries ],
+        [ map File::Spec->catfile($test_dir, $_), @dir_entries ]
+    ),
+	'prefix option as key-value pair' );
 
 # clean up
 
