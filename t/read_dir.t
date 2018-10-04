@@ -4,7 +4,7 @@ use strict ;
 use Test::More tests => 9 ;
 
 use File::Slurp ;
-#use Data::Dump qw(dd pp);
+use Data::Dump qw(dd pp);
 
 # try to honor possible tempdirs
 
@@ -62,7 +62,7 @@ my @prefixed_entries = read_dir( $test_dir, {prefix => 1} ) ;
 @prefixed_entries = sort @prefixed_entries ;
 ok( eq_array( \@prefixed_entries, [map "$test_dir/$_", @dir_entries] ),
 	'prefix option' )
-    or diag(\@prefixed_entries, [map "$test_dir/$_", @dir_entries]) ;
+    or pp(\@prefixed_entries, [map "$test_dir/$_", @dir_entries]) ;
 
 # clean up
 
