@@ -435,63 +435,71 @@ sub write_file {
 		}
 	}
 
-	if ( my $binmode = $opts->{'binmode'} ) {
-		binmode( $write_fh, $binmode ) ;
-	}
+    if ( defined $opts->{'binmode'} and $opts->{'binmode'} eq ':utf8' ) {
+        # As of perl-5.30, syswrite won't work on ':utf8' so let's just fall
+        # back to 'print'.
+        binmode( $write_fh, $opts->{'binmode'} ) ;
+        print $write_fh ${$buf_ref};
+    }
+    else {
+        if ( my $binmode = $opts->{'binmode'} ) {
+            binmode( $write_fh, $binmode ) ;
+        }
 
-	sysseek( $write_fh, 0, SEEK_END ) if $opts->{'append'} ;
+        sysseek( $write_fh, 0, SEEK_END ) if $opts->{'append'} ;
 
-#print 'WR before data ', unpack( 'H*', ${$buf_ref}), "\n" ;
+    #print 'WR before data ', unpack( 'H*', ${$buf_ref}), "\n" ;
 
-# fix up newline to write cr/lf if this is a windows text file
+    # fix up newline to write cr/lf if this is a windows text file
 
-	if ( $is_win32 && !$opts->{'binmode'} ) {
+        if ( $is_win32 && !$opts->{'binmode'} ) {
 
-# copy the write data if it was passed by ref so we don't clobber the
-# caller's data
-		$buf_ref = \do{ my $copy = ${$buf_ref}; } if $data_is_ref ;
-		${$buf_ref} =~ s/\n/\015\012/g ;
-	}
+    # copy the write data if it was passed by ref so we don't clobber the
+    # caller's data
+            $buf_ref = \do{ my $copy = ${$buf_ref}; } if $data_is_ref ;
+            ${$buf_ref} =~ s/\n/\015\012/g ;
+        }
 
-#print 'after data ', unpack( 'H*', ${$buf_ref}), "\n" ;
+    #print 'after data ', unpack( 'H*', ${$buf_ref}), "\n" ;
 
-# get the size of how much we are writing and init the offset into that buffer
+    # get the size of how much we are writing and init the offset into that buffer
 
-	my $size_left = length( ${$buf_ref} ) ;
-	my $offset = 0 ;
+        my $size_left = length( ${$buf_ref} ) ;
+        my $offset = 0 ;
 
-# loop until we have no more data left to write
+    # loop until we have no more data left to write
 
-	do {
+        do {
 
-# do the write and track how much we just wrote
+    # do the write and track how much we just wrote
 
-		my $write_cnt = syswrite( $write_fh, ${$buf_ref},
-				$size_left, $offset ) ;
+            my $write_cnt = syswrite( $write_fh, ${$buf_ref},
+                    $size_left, $offset ) ;
 
-# since we're using syswrite Perl won't automatically restart the call
-# when interrupted by a signal.
+    # since we're using syswrite Perl won't automatically restart the call
+    # when interrupted by a signal.
 
-		next if $!{EINTR};
+            next if $!{EINTR};
 
-		unless ( defined $write_cnt ) {
+            unless ( defined $write_cnt ) {
 
-			@_ = ( $opts, "write_file '$file_name' - syswrite: $!");
-			goto &_error ;
-		}
+                @_ = ( $opts, "write_file '$file_name' - syswrite: $!");
+                goto &_error ;
+            }
 
-# track how much left to write and where to write from in the buffer
+    # track how much left to write and where to write from in the buffer
 
-		$size_left -= $write_cnt ;
-		$offset += $write_cnt ;
+            $size_left -= $write_cnt ;
+            $offset += $write_cnt ;
 
-	} while( $size_left > 0 ) ;
+        } while( $size_left > 0 ) ;
 
-# we truncate regular files in case we overwrite a long file with a shorter file
-# so seek to the current position to get it (same as tell()).
+    # we truncate regular files in case we overwrite a long file with a shorter file
+    # so seek to the current position to get it (same as tell()).
 
-	truncate( $write_fh,
-		  sysseek( $write_fh, 0, SEEK_CUR ) ) unless $no_truncate ;
+        truncate( $write_fh,
+              sysseek( $write_fh, 0, SEEK_CUR ) ) unless $no_truncate ;
+    }
 
 	close( $write_fh ) ;
 
@@ -1268,3 +1276,4 @@ This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
+
