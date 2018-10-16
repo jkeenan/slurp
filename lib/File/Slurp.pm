@@ -175,8 +175,15 @@ sub read_file {
 
 # do the read and see how much we got
 
-		my $read_cnt = sysread( $read_fh, ${$buf_ref},
+		my $read_cnt;
+		if (defined $opts->{binmode} and $opts->{binmode} eq ':utf8') {
+			$read_cnt = read( $read_fh, ${$buf_ref},
 				$size_left, length ${$buf_ref} ) ;
+		}
+		else {
+			$read_cnt = sysread( $read_fh, ${$buf_ref},
+				$size_left, length ${$buf_ref} ) ;
+		}
 
 # since we're using sysread Perl won't automatically restart the call
 # when interrupted by a signal.
